@@ -70,7 +70,9 @@ def run(apd_file):
     pdf.cell(0, 4, '', 0, 1)
     final = '       Ο ΔΗΛΩΝ ΕΡΓΟΔΟΤΗΣ                                          Ο ΠΑΡΑΛΑΒΩΝ'
     pdf.cell(0, 4, final, 0, 1)
-    pdf.output(f'{apd_file}.pdf', 'F')
+    out_filename = f'{apd_file}.pdf'
+    pdf.output(out_filename, 'F')
+    return out_filename
 
 
 if __name__ == '__main__':

@@ -6,4 +6,4 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def test1():
     bfile = os.path.join(dir_path, 'apd.txt')
-    phf.makepdf_from_txt(bfile)
+    # phf.makepdf_from_txt(bfile)
