@@ -1,0 +1,41 @@
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div class="bootstrap-iso">
+      <div class="container-fluid">
+        <h1>Δοκιμαστική σελίδα</h1>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <form action="http://127.0.0.1:5000/test" method="POST">
+              <div class="form-group ">
+                <label class="control-label" for="eponymo">Επώνυμο</label>
+                <input class="form-control" id="eponymo" name="eponymo" type="text">
+              </div>
+              <div class="form-group ">
+                <label class="control-label" for="onoma">Όνομα</label>
+                <input class="form-control" id="onoma" name="onoma" type="text">
+              </div>
+              <div class="form-group ">
+                <div>
+                  <button class="btn btn-primary" name="submit" type="button" onclick="submitform()">Εκτέλεση</button>
+                </div>
+              </div>
+            </form>
+           
+          </div>
+        </div>
+        <input class="form-control" id="apot" name="apot" type="text">
+      </div>
+    </div>
+    <embed src="../static/apd.pdf" height="300" width="800">
+    <script src="script.js"></script>
+  </body>
+
+</html>
