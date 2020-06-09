@@ -8,10 +8,11 @@ class PDF(fpdf.FPDF):
         # Arial bold 15
         self.set_font('calibri', '', 12)
         # Move to the right
-        #self.cell(80)
+        # self.cell(80)
         # Title
         self.cell(0, 5, 'ΣΥΝΟΔΕΥΤΙΚΟ ΕΝΤΥΠΟ Α.Π.Δ.', 0, 1, 'C')
-        self.cell(0, 5, 'ΥΠΟΒΑΛΛΟΜΕΝΗΣ ΣΕ ΗΛΕΚΤΡΟΝΙΚΗ ΜΟΡΦΗ (Δισκέτα ή CD)', 0, 1, 'C')
+        self.cell(
+            0, 5, 'ΥΠΟΒΑΛΛΟΜΕΝΗΣ ΣΕ ΗΛΕΚΤΡΟΝΙΚΗ ΜΟΡΦΗ (Δισκέτα ή CD)', 0, 1, 'C')
         # Line break
         self.ln(1)
 
@@ -23,6 +24,7 @@ class PDF(fpdf.FPDF):
         self.set_font('calibri', '', 8)
         # Page number
         self.cell(0, 10, f'Σελίδα: {self.page_no()} ' + '/ {nb}', 0, 0, 'C')
+
 
 # Instantiation of inherited class
 pdf = PDF()

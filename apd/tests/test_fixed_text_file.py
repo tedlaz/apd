@@ -13,7 +13,7 @@ def test_fixed_text_file_01():
     assert t1 == 'ΑΡΓΥΡΙΟΥ  '
 
     # print(apd.lines)
-    assert apd.check()
+    assert not apd.errors_found()
     rval = apd.render()
     assert rval.startswith('10101CSL01   0101218ΠΑΡΟΥ')
     assert rval[-3:] == 'EOF'
@@ -27,7 +27,13 @@ def test_fixed_text_file_01():
     # do1.malakia()
     # apd.correct_header()
     # apd.render2file('CSL01-corrected')
-    print('')
+    # print('')
     # print(apd.with_greek_lbl())
-    print(apd.synodeftiko())
+
+    print(apd.total_ergnoi)
+    print(apd.ergnoi)
+    # print(apd.for_report())
+    print(apd.totals_by_18_gr())
+    # print(apd.print_company_data())
+    # print(apd.synodeftiko())
     # print(apd.linetypes_report())
