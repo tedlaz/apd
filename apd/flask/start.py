@@ -22,12 +22,11 @@ def getpdf():
         f = request.files['file']
         secure_name = secure_filename(f.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_name)
-        print(file_path)
         f.save(file_path)
         outfile = apd2pdf.run(file_path)
-        fout = f'../static/{os.path.basename(outfile)}'
+        fout = f'{app.static_url_path}/{os.path.basename(outfile)}'
         return render_template('uploader.html', file_path=fout)
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.106')
+    app.run(host='0.0.0.0')
