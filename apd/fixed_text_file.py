@@ -1,6 +1,7 @@
 from collections import defaultdict
 from abc import ABC, abstractmethod
-from apd.utils import grup, dec2gr
+import zipfile
+from .utils import grup, dec2gr
 
 
 class ColumnType(ABC):
@@ -301,11 +302,11 @@ class Document:
         as1 += '\n\n'
         t18 = self.totals_by_18_gr()
         if t18['18'] != ['', '', '']:
-            as1 += f"{'':15}{'(ΧΩΡΙΣ 18):':>11}{t18['no'][0]:^9}{t18['no'][1]:>14}{t18['no'][2]:>14}\n"
-            as1 += f"{'':15}{'(ME 18):':>11}{t18['18'][0]:^9}{t18['18'][1]:>14}{t18['18'][2]:>14}\n"
+            as1 += f"{'':10}{'(ΧΩΡΙΣ 18/19):':>16}{t18['no'][0]:^9}{t18['no'][1]:>14}{t18['no'][2]:>14}\n"
+            as1 += f"{'':10}{'(ME 18/19):':>16}{t18['18'][0]:^9}{t18['18'][1]:>14}{t18['18'][2]:>14}\n"
             as1 += '\n\n'
         as1 += 'Δηλώνω υπεύθυνα, ότι τα αναγραφόμενα συγκεντρωτικά στοιχεία του παρόντος εντύπου,\n'
-        print(len('Δηλώνω υπεύθυνα, ότι τα αναγραφόμενα συγκεντρωτικά στοιχεία του παρόντος εντύπου,\n'))
+        # print(len('Δηλώνω υπεύθυνα, ότι τα αναγραφόμενα συγκεντρωτικά στοιχεία του παρόντος εντύπου,\n'))
         as1 += 'περιέχονται στο υποβαλλόμενο ηλεκτρονικό μέσο.\n'
         as1 += '\n\n'
         as1 += 'Ο ΔΗΛΩΝ ΕΡΓΟΔΟΤΗΣ                                          Ο ΠΑΡΑΛΑΒΩΝ\n'
@@ -371,8 +372,13 @@ class Document:
         print(f'File {filename} created !!!')
 
     def parse(self, filename):
-        with open(filename, encoding='WINDOWS-1253') as fil:
-            lines = fil.read().split('\n')
+        if filename.endswith('.zip'):
+            with zipfile.ZipFile(filename) as zfile:
+                with zfile.open('CSL01') as fname:
+                    lines = fname.read().decode('CP1253').split('\n')
+        else:
+            with open(filename, encoding='WINDOWS-1253') as fil:
+                lines = fil.read().split('\n')
         currentergline = 0
         for i, lin in enumerate(lines):
             for code, linetype in self.linetypes.items():
@@ -400,7 +406,7 @@ class Document:
         tot = {'18': [0, 0, 0], 'no': [0, 0, 0]}
         for line in self.lines:
             if line['line_code'] == '3':
-                if line['apodoxes_type'] == '18':
+                if line['apodoxes_type'] == '018' or line['apodoxes_type'] == '019':
                     tot['18'][0] += line['imeres_asfalisis']
                     tot['18'][1] += line['apodoxes']
                     tot['18'][2] += line['katablitees_eisfores']
@@ -414,7 +420,7 @@ class Document:
         tot = {'18': [0, 0, 0], 'no': [0, 0, 0]}
         for line in self.lines:
             if line['line_code'] == '3':
-                if line['apodoxes_type'] == '18':
+                if line['apodoxes_type'] == '018' or line['apodoxes_type'] == '019':
                     tot['18'][0] += line['imeres_asfalisis']
                     tot['18'][1] += line['apodoxes']
                     tot['18'][2] += line['katablitees_eisfores']
@@ -423,12 +429,10 @@ class Document:
                     tot['no'][1] += line['apodoxes']
                     tot['no'][2] += line['katablitees_eisfores']
         for val in tot.values():
-            if val[0] == 0:
-                val[0] = ''
-            else:
-                val[0] = str(val[0])
+            val[0] = str(val[0]) if val[0] else ''
             val[1] = dec2gr(val[1])
             val[2] = dec2gr(val[2])
+        print(tot)
         return tot
 
     def correct_header(self):
@@ -523,7 +527,8 @@ def apd_builder():
     li3.add_col(Col('misetos', 'ΜΙΣΘ.ΠΕΡ.ΕΤΟΣ', ColTextInt(), 4))
     li3.add_col(Col('apoapasxolisi', 'ΑΠΟ ΗΜ/ΝΙΑ ΑΠΑΣΧ.', ColDate(), 8))
     li3.add_col(Col('eosapasxolisi', 'ΈΩΣ ΗΜ/ΝΙΑ ΑΠΑΣΧ.', ColDate(), 8))
-    li3.add_col(Col('apodoxes_type', 'ΤΥΠΟΣ ΑΠΟΔΟΧΩΝ', ColTextInt(), 2))
+    # ήταν 2 αλλαγή σε 3 από 6/11/2020
+    li3.add_col(Col('apodoxes_type', 'ΤΥΠΟΣ ΑΠΟΔΟΧΩΝ', ColTextInt(), 3))
     li3.add_col(Col('imeres_asfalisis', 'ΗΜΕΡΕΣ ΑΣΦΑΛΙΣΗΣ', ColInt(), 3))
     li3.add_col(Col('imeromisthio', 'ΗΜΕΡΟΜΙΣΘΙΟ', ColPoso(), 10))
     li3.add_col(Col('apodoxes', 'ΑΠΟΔΟΧΕΣ', ColPoso(), 10))

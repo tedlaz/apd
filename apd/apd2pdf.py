@@ -1,7 +1,7 @@
 import os
 import argparse
 import fpdf
-from apd import fixed_text_file as ftf
+from . import fixed_text_file as ftf
 dir_path = os.path.dirname(os.path.realpath(__file__))
 font_dir = os.path.join(dir_path, 'fonts')
 fnormal = os.path.join(font_dir, 'DejaVuSansMono.ttf')
